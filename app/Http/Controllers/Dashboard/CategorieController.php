@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class CategorieController extends Controller
@@ -29,7 +30,8 @@ class CategorieController extends Controller
     public function create()
     {
         $parents=Category::all();
-        return view('dashboard.categories.create',compact('parents'));
+        $category=new Category();
+        return view('dashboard.categories.create',compact('category','parents'));
     }
 
     /**
@@ -43,8 +45,14 @@ class CategorieController extends Controller
         $request->merge([
             'slug'=> Str::slug($request->name)
         ]);
+        $data=$request->except('image');
+        if($request->hasFile('image')){
+           $file = $request->file('image') ;
+           $path=$file->store('dashboardImages/categories','public');
+           $data['image']=$path;
+        }
         // dd($request->all());
-        Category::create($request->all());
+        Category::create( $data);
         return redirect()->route('dashboard.categories.index')
                ->with('success','category created successfully');
     }
@@ -92,7 +100,17 @@ class CategorieController extends Controller
     public function update(Request $request, $id)
     {
        $category=Category::findOrFail($id);
-       $category->update($request->all());
+       $old_image=$category->image;
+       $data=$request->except('image');
+       if($request->hasFile('image')){
+          $file = $request->file('image') ;
+          $path=$file->store('dashboardImages/categories','public');
+          $data['image']=$path;
+       }
+       $category->update($data);
+       if($old_image && isset( $data['image'])){
+           Storage::disk('public')->delete($old_image);
+       }
        return redirect()->route('dashboard.categories.index')
                ->with('success','category updated successfully');
     }
@@ -105,7 +123,12 @@ class CategorieController extends Controller
      */
     public function destroy($id)
     {
-          Category::destroy($id);
+          $category=Category::findOrFail($id);
+          $old_image=$category->image;
+          $category->delete();
+          if( $old_image){
+            Storage::disk('public')->delete($old_image);
+          }
           return redirect()->route('dashboard.categories.index')
           ->with('success','category deleted successfully');
     }
