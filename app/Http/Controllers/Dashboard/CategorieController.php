@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
 use Exception;
 use Illuminate\Http\Request;
@@ -40,8 +41,14 @@ class CategorieController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
+        // $request->validate([
+        //    'name'=>['required','string','min:3','max:255'],
+        //    'parent_id'=>['int','exists:categories,id'],
+        //    'image'=>['image','max:1048576','dimensions:min_width=100,min_height=100'],
+        //    'status'=>'in:active,archived'
+        // ]);
         $request->merge([
             'slug'=> Str::slug($request->name)
         ]);
@@ -97,8 +104,14 @@ class CategorieController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CategoryRequest $request, $id)
     {
+        $request->validate([
+            'name'=>['required','string','min:3','max:255'],
+            'parent_id'=>['int','exists:categories,id'],
+            'image'=>['image','max:1048576','dimensions:min_width=100,min_height=100'],
+            'status'=>'in:active,archived'
+         ]);
        $category=Category::findOrFail($id);
        $old_image=$category->image;
        $data=$request->except('image');
