@@ -18,6 +18,15 @@
         {{session('info')}}
     </div>
 @endif
+<form action="{{URL::current()}}" method="get" class="d-flex justify-content-between mb-4">
+    <input name="name" value="{{request('name')}}" placeholder="Name" class="form-control mx-3">
+    <select name="status"  class="form-control mx-3">
+        <option value="">All</option>
+        <option value="active" @selected(request('status')== 'active')>Active</option>
+        <option value="archived" @selected(request('status')== 'archived')>Archived</option>
+    </select>
+    <button class="btn-dark mx-3">Filter</button>
+</form>
 <table class="table">
     <thead>
         <tr>
@@ -58,5 +67,5 @@
 
     </tbody>
 </table>
-{{ $categories->links()  }}
+{{ $categories->withQueryString()->links()  }}
 @endsection

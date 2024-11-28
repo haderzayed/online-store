@@ -31,5 +31,6 @@ class AppServiceProvider extends ServiceProvider
         },
         'this value not good');
         Paginator::useBootstrapFour();
+        // Paginator::defaultView('customeview');
     }
 }
