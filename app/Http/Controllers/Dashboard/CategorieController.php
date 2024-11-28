@@ -20,14 +20,7 @@ class CategorieController extends Controller
     public function index()
     {
         $request=request();
-        $query=Category::query();
-        if($name=$request->query('name')){
-            $query->where('name','like',"%$name%");
-        }
-        if($status=$request->query('status')){
-            $query->whereStatus($status);
-        }
-        $categories=$query->paginate(5);
+        $categories=Category::filter($request->query())->paginate(5);
         return view('dashboard.categories.index',compact('categories'));
     }
 
