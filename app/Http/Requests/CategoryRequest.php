@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\Filter;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+
 
 class CategoryRequest extends FormRequest
 {
@@ -27,8 +29,17 @@ class CategoryRequest extends FormRequest
         if ($this->isMethod('post')) {
 
             return [
-                'name'=>['required','string','min:3','max:255',
-                 Rule::unique('categories','name')],
+                'name'=>[
+                'required','string','min:3','max:255',
+                 Rule::unique('categories','name'),
+            //      function($attribute,$value,$fail){
+            //         if(strtolower($value)== 'laravel'){
+            //                $fail('this name is forbidden !');
+            //         }
+            //    }
+            // new Filter(['php','laravel','css']),
+            'Filter:php,laravel,css',
+                ],
                 'parent_id'=>['int','exists:categories,id'],
                 'image'=>['image','max:1048576','dimensions:min_width=100,min_height=100'],
                 'status'=>'in:active,archived'
@@ -37,8 +48,11 @@ class CategoryRequest extends FormRequest
         }else{
             $id=$this->route('category');
             return [
-                'name'=>['required','string','min:3','max:255',
-                 Rule::unique('categories','name')->ignore($id)],
+                'name'=>[
+                'required','string','min:3','max:255',
+                 Rule::unique('categories','name')->ignore($id),
+                 'Filter:php,laravel,css',
+                ],
                 'parent_id'=>['int','exists:categories,id'],
                 'image'=>['image','max:1048576','dimensions:min_width=100,min_height=100'],
                 'status'=>'in:active,archived'
@@ -47,10 +61,10 @@ class CategoryRequest extends FormRequest
 
     }
 
-    public function messages()
-    {
-        // return[
-        //      'unique'=>'الاسم موجود بالفعل',
-        // ];
-    }
+    // public function messages()
+    // {
+    //     return[
+    //          'unique'=>'الاسم موجود بالفعل',
+    //     ];
+    // }
 }

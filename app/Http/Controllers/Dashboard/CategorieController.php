@@ -19,7 +19,7 @@ class CategorieController extends Controller
      */
     public function index()
     {
-        $categories=Category::all();
+        $categories=Category::paginate();
         return view('dashboard.categories.index',compact('categories'));
     }
 
@@ -106,12 +106,9 @@ class CategorieController extends Controller
      */
     public function update(CategoryRequest $request, $id)
     {
-        $request->validate([
-            'name'=>['required','string','min:3','max:255'],
-            'parent_id'=>['int','exists:categories,id'],
-            'image'=>['image','max:1048576','dimensions:min_width=100,min_height=100'],
-            'status'=>'in:active,archived'
-         ]);
+        $request->merge([
+            'slug'=> Str::slug($request->name)
+        ]);
        $category=Category::findOrFail($id);
        $old_image=$category->image;
        $data=$request->except('image');
