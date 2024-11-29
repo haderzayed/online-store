@@ -156,8 +156,7 @@ class CategorieController extends Controller
         $category=Category::onlyTrashed()->findOrFail($id);
         $old_image=$category->image;
         $category->forceDelete();
-        $category->delete();
-        if( $old_image){
+        if($old_image){
           Storage::disk('public')->delete($old_image);
         }
         return redirect()->route('dashboard.categories.trash')

@@ -46,7 +46,7 @@
                     <i class="far fa-circle nav-icon"></i>
                     <p>Categories</p>
                 </a>
-                <a href="#" class="nav-link ">
+                <a href="{{route('dashboard.stores.index') }}" class="nav-link ">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Stores</p>
                 </a>

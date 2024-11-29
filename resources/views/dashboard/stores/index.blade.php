@@ -1,11 +1,15 @@
 @extends('layouts.dashboard')
-@section('title','Trashed Categories')
+@section('title','Stores')
 @section('breadcrumb')
     @parent
-c    <li class="breadcrumb-item active">Trashed</li>
+    <li class="breadcrumb-item"><a href="{{ route('dashboard.') }}">Home</a></li>
+    <li class="breadcrumb-item active">Stores</li>
 @endsection
 @section('content')
-
+<div class="m-3">
+    <a href="{{ route('dashboard.stores.create') }}" class="btn  btn-primary mr-3"> Create </a>
+    <a href="{{ route('dashboard.stores.trash') }}" class="btn  btn-primary"> trashed </a>
+</div>
 @if(session()->has('success'))
     <div class="alert alert-success my-2 mx-4">
         {{session('success') }}
@@ -32,29 +36,23 @@ c    <li class="breadcrumb-item active">Trashed</li>
             <th>ID</th>
             <th>Name</th>
             <th>Status</th>
-            <th>Paernt</th>
-            <th>Deleted At</th>
+            <th>Created At</th>
             <th colspan="2"></th>
         </tr>
     </thead>
     <tbody>
-        @forelse ($categories as $category )
+        @forelse ($stores as $store )
         <tr>
-            <td><img src="{{asset('storage/'. $category->image )}}" width="100" height="100"> </td>
-            <td>{{ $category->id }}</td>
-            <td>{{ $category->name }}</td>
-            <td>{{ $category->status }}</td>
-            <td>{{ $category->parent->name ?? " ---"}}</td>
-            <td>{{ $category->deleted_at }}</td>
+            <td><img src="{{asset('storage/'. $store->logo_image )}}" width="100" height="100"> </td>
+            <td>{{ $store->id }}</td>
+            <td>{{ $store->name }}</td>
+            <td>{{ $store->status }}</td>
+            <td>{{ $store->created_at }}</td>
             <td>
-                <form action="{{route('dashboard.categories.restore',$category->id)}}" method="post">
-                    @csrf
-                    @method('put')
-                      <button type="submit" class="btn btn-sm btn-outline-info">Restore</button>
-                  </form>
+                <a href="{{ route('dashboard.stores.edit',$store->id) }}" class="btn btn-sm btn-outline-success">Edit</a>
             </td>
             <td>
-                <form action="{{route('dashboard.categories.force-delete',$category->id)}}" method="post">
+                <form action="{{route('dashboard.stores.destroy',$store->id)}}" method="post">
                   @csrf
                   @method('delete')
                     <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
@@ -63,11 +61,11 @@ c    <li class="breadcrumb-item active">Trashed</li>
         </tr>
         @empty
         <tr>
-            <td colspan="7" class="text-center">No Categories Defined</td>
+            <td colspan="7" class="text-center">No stores Defined</td>
         </tr>
         @endforelse
 
     </tbody>
 </table>
-{{ $categories->withQueryString()->links()  }}
+{{ $stores->withQueryString()->links()  }}
 @endsection

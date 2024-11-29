@@ -1,8 +1,9 @@
 @extends('layouts.dashboard')
-@section('title','Trashed Categories')
+@section('title','Trashed stores')
 @section('breadcrumb')
     @parent
-c    <li class="breadcrumb-item active">Trashed</li>
+    <li class="breadcrumb-item"><a href="{{ route('dashboard.stores.index') }}">stores</a></li>
+    <li class="breadcrumb-item active">Trashed</li>
 @endsection
 @section('content')
 
@@ -32,29 +33,27 @@ c    <li class="breadcrumb-item active">Trashed</li>
             <th>ID</th>
             <th>Name</th>
             <th>Status</th>
-            <th>Paernt</th>
             <th>Deleted At</th>
             <th colspan="2"></th>
         </tr>
     </thead>
     <tbody>
-        @forelse ($categories as $category )
+        @forelse ($stores as $store )
         <tr>
-            <td><img src="{{asset('storage/'. $category->image )}}" width="100" height="100"> </td>
-            <td>{{ $category->id }}</td>
-            <td>{{ $category->name }}</td>
-            <td>{{ $category->status }}</td>
-            <td>{{ $category->parent->name ?? " ---"}}</td>
-            <td>{{ $category->deleted_at }}</td>
+            <td><img src="{{asset('storage/'. $store->logo_image )}}" width="100" height="100"> </td>
+            <td>{{ $store->id }}</td>
+            <td>{{ $store->name }}</td>
+            <td>{{ $store->status }}</td>
+            <td>{{ $store->deleted_at }}</td>
             <td>
-                <form action="{{route('dashboard.categories.restore',$category->id)}}" method="post">
+                <form action="{{route('dashboard.stores.restore',$store->id)}}" method="post">
                     @csrf
                     @method('put')
                       <button type="submit" class="btn btn-sm btn-outline-info">Restore</button>
                   </form>
             </td>
             <td>
-                <form action="{{route('dashboard.categories.force-delete',$category->id)}}" method="post">
+                <form action="{{route('dashboard.stores.force-delete',$store->id)}}" method="post">
                   @csrf
                   @method('delete')
                     <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
@@ -63,11 +62,11 @@ c    <li class="breadcrumb-item active">Trashed</li>
         </tr>
         @empty
         <tr>
-            <td colspan="7" class="text-center">No Categories Defined</td>
+            <td colspan="7" class="text-center">No stores Defined</td>
         </tr>
         @endforelse
 
     </tbody>
 </table>
-{{ $categories->withQueryString()->links()  }}
+{{ $stores->withQueryString()->links()  }}
 @endsection

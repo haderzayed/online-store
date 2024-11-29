@@ -2,6 +2,7 @@
 @section('title','create')
 @section('breadcrumb')
     @parent
+    <li class="breadcrumb-item"><a href="{{ route('dashboard.categories.index') }}">categories</a></li>
     <li class="breadcrumb-item active">create</li>
 @endsection
 @section('content')
