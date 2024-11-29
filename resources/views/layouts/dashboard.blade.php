@@ -25,7 +25,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- Main Sidebar Container -->
     @include('layouts.partials.sidebar')
   <!--/. Main Sidebar Container -->
-   
+
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -48,7 +48,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- /.content-header -->
 
     <!-- Main content -->
-     @yield('content')
+    <div class="mx-4">
+        @yield('content')
+    </div>
+
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->

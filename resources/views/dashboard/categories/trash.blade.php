@@ -1,14 +1,12 @@
 @extends('layouts.dashboard')
-@section('title','Categories')
+@section('title','Trashed Categories')
 @section('breadcrumb')
     @parent
-    <li class="breadcrumb-item active">Categories</li>
+    <li class="breadcrumb-item"><a href="{{ route('dashboard.categories.index') }}">Categories</a></li>
+    <li class="breadcrumb-item active">Trashed</li>
 @endsection
 @section('content')
-<div class="m-3">
-    <a href="{{ route('dashboard.categories.create') }}" class="btn  btn-primary mr-3"> Create </a>
-    <a href="{{ route('dashboard.categories.trash') }}" class="btn  btn-primary"> trashed </a>
-</div>
+
 @if(session()->has('success'))
     <div class="alert alert-success my-2 mx-4">
         {{session('success') }}
@@ -36,7 +34,7 @@
             <th>Name</th>
             <th>Status</th>
             <th>Paernt</th>
-            <th>Created At</th>
+            <th>Deleted At</th>
             <th colspan="2"></th>
         </tr>
     </thead>
@@ -48,12 +46,16 @@
             <td>{{ $category->name }}</td>
             <td>{{ $category->status }}</td>
             <td>{{ $category->parent->name ?? " ---"}}</td>
-            <td>{{ $category->created_at }}</td>
+            <td>{{ $category->deleted_at }}</td>
             <td>
-                <a href="{{ route('dashboard.categories.edit',$category->id) }}" class="btn btn-sm btn-outline-success">Edit</a>
+                <form action="{{route('dashboard.categories.restore',$category->id)}}" method="post">
+                    @csrf
+                    @method('put')
+                      <button type="submit" class="btn btn-sm btn-outline-info">Restore</button>
+                  </form>
             </td>
             <td>
-                <form action="{{route('dashboard.categories.destroy',$category->id)}}" method="post">
+                <form action="{{route('dashboard.categories.force-delete',$category->id)}}" method="post">
                   @csrf
                   @method('delete')
                     <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>

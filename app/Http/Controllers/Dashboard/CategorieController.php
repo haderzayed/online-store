@@ -135,12 +135,33 @@ class CategorieController extends Controller
     public function destroy($id)
     {
           $category=Category::findOrFail($id);
-          $old_image=$category->image;
           $category->delete();
-          if( $old_image){
-            Storage::disk('public')->delete($old_image);
-          }
           return redirect()->route('dashboard.categories.index')
           ->with('success','category deleted successfully');
     }
+
+    public function trash(){
+        $categories=Category::onlyTrashed()->paginate();
+        return view('dashboard.categories.trash',compact('categories'));
+    }
+
+    public function restore(Request $request,$id){
+        $category=Category::onlyTrashed()->findOrFail($id);
+        $category->restore();
+        return redirect()->route('dashboard.categories.trash')
+          ->with('success','category trashed successfully');
+    }
+
+    public function forceDelete($id){
+        $category=Category::onlyTrashed()->findOrFail($id);
+        $old_image=$category->image;
+        $category->forceDelete();
+        $category->delete();
+        if( $old_image){
+          Storage::disk('public')->delete($old_image);
+        }
+        return redirect()->route('dashboard.categories.trash')
+          ->with('success','category deleted forever successfully');
+    }
+
 }
