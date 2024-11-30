@@ -18,10 +18,11 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug')->unique();
             $table->text('description')->nullable();
-            $table->string('logo_image')->nullable();
-            $table->string('cover_image')->nullable();
-            $table->enum('status',['active','inactive'])->default('active');
+            $table->text('logo_image')->nullable();
+            $table->text('cover_image')->nullable();
+            $table->enum('status',['active','archived'])->default('archived');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
