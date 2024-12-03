@@ -11,4 +11,7 @@ class Store extends Model
     use HasFactory , SoftDeletes;
     protected  $fillable=['name','slug','logo_image','cover_image','status' ,'description'];
 
+    public function products(){
+        return  $this->hasMany(Product::class);
+    }
 }

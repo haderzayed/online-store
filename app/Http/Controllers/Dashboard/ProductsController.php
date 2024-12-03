@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+
 
 class ProductsController extends Controller
 {
@@ -15,8 +15,8 @@ class ProductsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        $products=Product::paginate();
+    {    // eager loading
+        $products=Product::with(['category','store'])->paginate();
         return view('dashboard.products.index',compact('products'));
     }
 

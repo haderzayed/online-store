@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use  App\Http\Controllers\Dashboard\StoresController;
 use App\Http\Controllers\Dashboard\ProductsController;
+use App\Http\Controllers\Dashboard\ProfileController;
 
 Route::group([
     'middleware' => ['auth'],
@@ -36,4 +37,9 @@ Route::group([
     Route::delete('/products/{store}/force-delete', [ProductsController::class, 'forceDelete'])
         ->name('products.force-delete');
     Route::resource('products', ProductsController::class);
+
+    Route::get('/profile/edit',[ProfileController::class, 'edit'])
+           ->name('profile.edit');
+    Route::patch('/profile/update',[ProfileController::class, 'update'])
+    ->name('profile.update');
 });

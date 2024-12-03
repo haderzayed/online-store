@@ -36,6 +36,7 @@
             <th>Name</th>
             <th>Status</th>
             <th>Paernt</th>
+            <th>products #</th>
             <th>Created At</th>
             <th colspan="2"></th>
         </tr>
@@ -45,9 +46,10 @@
         <tr>
             <td><img src="{{asset('storage/'. $category->image )}}" width="100" height="100"> </td>
             <td>{{ $category->id }}</td>
-            <td>{{ $category->name }}</td>
+            <td><a href="{{route('dashboard.categories.show',$category->id)}}">{{ $category->name }}</a></td>
             <td>{{ $category->status }}</td>
-            <td>{{ $category->parent->name ?? " ---"}}</td>
+            <td>{{ $category->parent->name}}</td>
+            <td>{{ $category->products_count}}</td>
             <td>{{ $category->created_at }}</td>
             <td>
                 <a href="{{ route('dashboard.categories.edit',$category->id) }}" class="btn btn-sm btn-outline-success">Edit</a>
@@ -62,7 +64,7 @@
         </tr>
         @empty
         <tr>
-            <td colspan="7" class="text-center">No Categories Defined</td>
+            <td colspan="9" class="text-center">No Categories Defined</td>
         </tr>
         @endforelse
 

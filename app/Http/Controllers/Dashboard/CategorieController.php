@@ -20,7 +20,11 @@ class CategorieController extends Controller
     public function index()
     {
         $request=request();
-        $categories=Category::filter($request->query())->paginate(5);
+        $categories=Category::with('parent') //eager loading
+               ->withCount(['products'=>function($query){ //return number of products
+                    $query->whereStatus('active');
+               }])
+               ->filter($request->query())->paginate( );
         return view('dashboard.categories.index',compact('categories'));
     }
 
@@ -71,9 +75,9 @@ class CategorieController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Category $category)
     {
-        //
+        return view('dashboard.categories.show',compact('category'));
     }
 
     /**

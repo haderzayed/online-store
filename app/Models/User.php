@@ -25,6 +25,11 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
     ];
 
+    public function profile(){
+        return $this->hasOne(Profile::class,'user_id','id')
+               ->withDefault();
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *

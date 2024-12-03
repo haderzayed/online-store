@@ -15,7 +15,15 @@ class Category extends Model
 
     public function parent()
     {
-        return $this->hasOne(Category::class, 'id', 'parent_id');
+        return $this->belongsTo(Category::class, 'parent_id', 'id' )
+                ->withDefault();
+    }
+    public function child()
+    {
+        return $this->hasMany(Category::class, 'parent_id', 'id' );
+    }
+    public function products(){
+        return $this->hasMany(Product::class);
     }
     public function scopeFilter(Builder $builder,$filters){
         $builder->when($filters['name'] ?? false,function($builder,$value){
