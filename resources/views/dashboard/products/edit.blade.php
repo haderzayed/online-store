@@ -1,14 +1,14 @@
 @extends('layouts.dashboard')
-@section('title',$store->name)
+@section('title',$product->name)
 @section('breadcrumb')
     @parent
-    <li class="breadcrumb-item"><a href="{{ route('dashboard.stores.index') }}">stores</a></li>
-    <li class="breadcrumb-item active">{{ $store->name }} </li>
+    <li class="breadcrumb-item"><a href="{{ route('dashboard.products.index') }}">products</a></li>
+    <li class="breadcrumb-item active">{{ $product->name }} </li>
 @endsection
 @section('content')
-  <form action="{{ route('dashboard.stores.update',$store->id) }}" method="post" enctype="multipart/form-data">
+  <form action="{{ route('dashboard.products.update',$product->id) }}" method="post" enctype="multipart/form-data">
     @csrf
     @method('put')
-     @include('dashboard.stores._form',['button_lable'=>'update'])
+     @include('dashboard.products._form',['button_lable'=>'update'])
     </form>
 @endsection

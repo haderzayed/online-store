@@ -37,7 +37,7 @@ Route::group([
     Route::delete('/products/{store}/force-delete', [ProductsController::class, 'forceDelete'])
         ->name('products.force-delete');
     Route::resource('products', ProductsController::class);
-
+    // profile routes
     Route::get('/profile/edit',[ProfileController::class, 'edit'])
            ->name('profile.edit');
     Route::patch('/profile/update',[ProfileController::class, 'update'])

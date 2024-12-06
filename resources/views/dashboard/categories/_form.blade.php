@@ -23,7 +23,8 @@
         <label>Parent Id</label>
         <select name="parent_id" class="form-control @error('parent_id') is-invalid @enderror" placeholder="Pick a state...">
           @foreach ($parents as $parent)
-           <option value="{{$parent->id}}" @selected(old('parent_id',$category->parent_id)== $parent->id) >{{$parent->name}}</option>
+          <option value=" " >Select Category</option>
+          <option value="{{$parent->id}}" @selected(old('parent_id',$category->parent_id)== $parent->id) >{{$parent->name}}</option>
           @endforeach
         </select>
         @error("parent_id")

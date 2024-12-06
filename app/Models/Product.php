@@ -22,15 +22,21 @@ class Product extends Model
     //        }
     //    });
     // }
-
-    protected static function booted(){
-        static::addGlobalScope ('store',new StoreScope());
-     }
+    protected $fillable=['id','store_id','category_id','name','slug','description',
+                         'image','price','compare_price','options','rating',
+                          'featured','status'];
+    // protected static function booted(){
+    //     static::addGlobalScope ('sto re',new StoreScope());
+    //  }
 
      public function category(){
         return $this->belongsTo(Category::class);
      }
      public function store(){
         return $this->belongsTo(Store::class);
+     }
+
+     public function tags(){
+       return $this->belongsToMany(Tag::class);
      }
 }
