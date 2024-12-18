@@ -35,8 +35,9 @@ class ProductsController extends Controller
         $product=new Product();
         $categories=Category::all();
         $stores=Store::all();
+        $tags='';
         return view('dashboard.products.create',
-        compact('product','categories','stores'));
+        compact('product','categories','stores','tags'));
     }
 
     /**
@@ -46,10 +47,34 @@ class ProductsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(ProductRequest $request)
-    {   $request->merge([
-        'slug'=>Str::slug($request->name)
-    ]);
-        $product=Product::create($request->all());
+    {
+        $request->merge([
+            'slug'=>Str::slug($request->name)
+        ]);
+        $data=$request->except('image');
+        if($request->hasFile('image')){
+        $file = $request->file('image') ;
+        $path=$file->store('dashboardImages/products','public');
+        $data['image']=$path;
+        }
+        $product=Product::create($data);
+        $tags=json_decode($request->post('tags'));
+        if( $tags){
+        $saved_tags=Tag::all();
+        $tag_ids=[];
+        foreach($tags as $item){
+          $slug=Str::slug($item->value);
+          $tag=$saved_tags->where('slug',$slug)->first();
+          if(! $tag){
+             $tag=Tag::create([
+                 'name'=>$item->value,
+                 'slug'=>$slug
+             ]);
+          }
+          $tag_ids[]=$tag->id;
+        $product->tags()->sync($tag_ids);
+         }
+     }
         return redirect()->route('dashboard.products.index')
         ->with('success','product '.$product->name.' created successfully');
     }
@@ -105,6 +130,7 @@ class ProductsController extends Controller
        }
     //    dd($request->post('tags'));
        $tags=json_decode($request->post('tags'));
+       if($tags){
        $saved_tags=Tag::all();
        $tag_ids=[];
        foreach($tags as $item){
@@ -117,8 +143,11 @@ class ProductsController extends Controller
             ]);
          }
          $tag_ids[]=$tag->id;
-       }
        $product->tags()->sync($tag_ids);
+        }
+    }else{
+        $product->tags()->delete();
+    }
        return redirect()->route('dashboard.products.index')
                ->with('success','product updated successfully');
     }
@@ -129,8 +158,33 @@ class ProductsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Product $product)
     {
-        //
+        $product->delete();
+        return redirect()->route('dashboard.products.index')
+        ->with('success','product deleted successfully');
+    }
+
+    public function trash(){
+      $products=Product::onlyTrashed()->paginate();
+      return view('dashboard.products.trash',compact('products'));
+    }
+
+    public function restore($id){
+       $product=Product::onlyTrashed()->findOrFail($id);
+       $product->restore();
+       return redirect()->route('dashboard.products.trash')
+              ->with('success','product restored successfuly');
+    }
+
+    public function forceDelete($id){
+      $product=Product::onlyTrashed()->findOrFail($id);
+      $old_image=$product->image;
+      $product->forceDelete();
+      if( $old_image){
+         Storage::disk('public')->delete($old_image);
+      }
+      return redirect()->route('dashboard.products.trash')
+          ->with('success','product deleted forever successfully');
     }
 }

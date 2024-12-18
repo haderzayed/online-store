@@ -21,10 +21,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <div class="wrapper">
 
   <!-- Navbar -->
-    @include('layouts.partials.nav')
+    @include('layouts.partials.backend.nav')
   <!-- /.navbar -->
   <!-- Main Sidebar Container -->
-    @include('layouts.partials.sidebar')
+    @include('layouts.partials.backend.sidebar')
   <!--/. Main Sidebar Container -->
 
   <!-- Content Wrapper. Contains page content -->
@@ -68,7 +68,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!--/.control-sidebar -->
 
   <!-- Main Footer -->
-   @include('layouts.partials.footer')
+   @include('layouts.partials.backend.footer')
   <!--/. Main Footer -->
 </div>
 <!-- ./wrapper -->

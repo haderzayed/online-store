@@ -83,7 +83,7 @@ return [
     | to any of the locales which will be supported by the application.
     |
     */
-
+    'currency' => 'USD',
     'locale' => 'en',
 
     /*
@@ -212,6 +212,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
+        'Currency'=>App\Helpers\Currency::class,
     ])->toArray(),
 
 ];

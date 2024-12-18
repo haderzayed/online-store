@@ -8,7 +8,7 @@
 @section('content')
 <div class="m-3">
     <a href="{{ route('dashboard.products.create') }}" class="btn  btn-primary mr-3"> Create </a>
-    <a href="{{ route('dashboard.products.trash') }}" class="btn  btn-primary"> trashed </a>
+    <a href="{{ route('dashboard.products.trash') }}" class="btn  btn-primary">Trashed </a>
 </div>
 @if(session()->has('success'))
     <div class="alert alert-success my-2 mx-4">

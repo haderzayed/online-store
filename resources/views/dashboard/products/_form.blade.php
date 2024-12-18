@@ -96,7 +96,7 @@
 <div class="m-3">
     <div class="form-group col-10">
         <label>Tags</label>
-        <input name="tags" value="{{$tags}}"  type="text" class="form-control @error('tags') is-invalid @enderror" placeholder="Enter product Tags...">
+        <input name="tags" value="{{ old('tags', $tags) }}"  type="text" class="form-control @error('tags') is-invalid @enderror" placeholder="Enter product Tags...">
         @error('tags')
         <div class="invalid-feedback">
             {{ $message }}
@@ -115,11 +115,11 @@
         </label>
     </div>
     <div class="form-check">
-        <input name="status" value="daft" @checked(old('status', $product->status) == 'daft')
+        <input name="status" value="draft" @checked(old('status', $product->status) == 'daft')
         class="form-check-input" type="radio"
         id="flexRadioDefault2">
         <label class="form-check-label" for="flexRadioDefault2">
-           Daft
+           Draft
         </label>
     </div>
     <div class="form-check">

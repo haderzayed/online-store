@@ -1,8 +1,8 @@
 @extends('layouts.dashboard')
-@section('title','Trashed stores')
+@section('title','Trashed products')
 @section('breadcrumb')
     @parent
-    <li class="breadcrumb-item"><a href="{{ route('dashboard.stores.index') }}">stores</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('dashboard.products.index') }}">products</a></li>
     <li class="breadcrumb-item active">Trashed</li>
 @endsection
 @section('content')
@@ -32,28 +32,32 @@
             <th></th>
             <th>ID</th>
             <th>Name</th>
+            <th>Category</th>
+            <th>Store</th>
             <th>Status</th>
             <th>Deleted At</th>
             <th colspan="2"></th>
         </tr>
     </thead>
     <tbody>
-        @forelse ($stores as $store )
+        @forelse ($products as $product )
         <tr>
-            <td><img src="{{asset('storage/'. $store->logo_image )}}" width="100" height="100"> </td>
-            <td>{{ $store->id }}</td>
-            <td>{{ $store->name }}</td>
-            <td>{{ $store->status }}</td>
-            <td>{{ $store->deleted_at }}</td>
+            <td><img src="{{asset('storage/'. $product->image )}}" width="100" height="100"> </td>
+            <td>{{ $product->id }}</td>
+            <td>{{ $product->name }}</td>
+            <td>{{ $product->category->name}}</td>
+            <td>{{ $product->store->name }}</td>
+            <td>{{ $product->status }}</td>
+            <td>{{ $product->deleted_at }}</td>
             <td>
-                <form action="{{route('dashboard.stores.restore',$store->id)}}" method="post">
+                <form action="{{route('dashboard.products.restore',$product->id)}}" method="post">
                     @csrf
                     @method('put')
                       <button type="submit" class="btn btn-sm btn-outline-info">Restore</button>
                   </form>
             </td>
             <td>
-                <form action="{{route('dashboard.stores.force-delete',$store->id)}}" method="post">
+                <form action="{{route('dashboard.products.force-delete',$product->id)}}" method="post">
                   @csrf
                   @method('delete')
                     <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
@@ -62,11 +66,11 @@
         </tr>
         @empty
         <tr>
-            <td colspan="7" class="text-center">No stores Defined</td>
+            <td colspan="9" class="text-center">No products Defined</td>
         </tr>
         @endforelse
 
     </tbody>
 </table>
-{{ $stores->withQueryString()->links()  }}
+{{ $products->withQueryString()->links()  }}
 @endsection

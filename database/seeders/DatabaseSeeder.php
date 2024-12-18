@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
         // ]);
         Store::factory(10)->create();
         Category::factory(20)->create();
-        Product::factory(100)->create();
+        // Product::factory(100)->create();
         $this->call(UserSeeder::class);
     }
 }

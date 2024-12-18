@@ -38,19 +38,19 @@
         <!-- Sidebar Menu -->
         <nav class="mt-2">
             <div class="nav nav-pills nav-sidebar flex-column" role="menu" data-accordion="false">
-                <a href="{{ route('dashboard.') }}" class="nav-link">
+                <a href="{{ route('dashboard.') }}" class="nav-link  @if(Route::is('dashboard.') ) active @endif">
                     <i class="nav-icon fas fa-tachometer-alt"></i>
                     <p>Dashboard</p>
                 </a>
-                <a href="{{route('dashboard.categories.index') }}" class="nav-link active">
+                <a href="{{route('dashboard.categories.index') }}" class="nav-link @if(Route::is('dashboard.categories.*') ) active @endif">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Categories</p>
                 </a>
-                <a href="{{route('dashboard.stores.index') }}" class="nav-link ">
+                <a href="{{route('dashboard.stores.index') }}" class="nav-link @if(Route::is('dashboard.stores.*') ) active @endif">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Stores</p>
                 </a>
-                <a href="{{route('dashboard.products.index') }}" class="nav-link">
+                <a href="{{route('dashboard.products.index') }}" class="nav-link @if(Route::is('dashboard.products.*') ) active @endif">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Products</p>
                 </a>
