@@ -17,7 +17,7 @@
         <div class="product-info">
             <span class="category">{{ $product->category->name . $product->id}}</span>
             <h4 class="title">
-                <a href="{{route('products.show',$product->slug)}}">{{ $product->name }}</a>
+                <a href="{{route('product.show',$product->slug)}}">{{ $product->name }}</a>
             </h4>
             <ul class="review">
                 <li><i class="lni lni-star-filled"></i></li>
