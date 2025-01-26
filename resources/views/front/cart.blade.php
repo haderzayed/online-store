@@ -36,7 +36,7 @@
             <!-- End Cart List Title -->
             @foreach ( $cart->get() as $item)
               <!-- Cart Single List list -->
-            <div class="cart-single-list">
+            <div class="cart-single-list" id="{{ $item->product_id }}">
                 <div class="row align-items-center">
                     <div class="col-lg-1 col-md-1 col-12">
                         <a href="{{route('product.show',$item->product->slug)}}"><img src="{{ $item->product->image_url }}" alt="#"></a>
@@ -51,7 +51,7 @@
                     </div>
                     <div class="col-lg-2 col-md-2 col-12">
                         <div class="count-input">
-                            <input type="number" name="quantity" value="{{$item->quantity}}" class="form-control">
+                            <input type="number" min="1" name="quantity" value="{{$item->quantity}}" data-id="{{ $item->id }}" class="form-control text-center item-quantity">
                         </div>
                     </div>
                     <div class="col-lg-2 col-md-2 col-12">
@@ -61,7 +61,7 @@
                         <p>{{Currency::format(0) }}</p>
                     </div>
                     <div class="col-lg-1 col-md-2 col-12">
-                        <a class="remove-item" href="javascript:void(0)"><i class="lni lni-close"></i></a>
+                        <a class="remove-item"  data-id="{{ $item->product_id }}" ><i class="lni lni-close"></i></a>
                     </div>
                 </div>
             </div>
@@ -88,7 +88,7 @@
                         <div class="col-lg-4 col-md-6 col-12">
                             <div class="right">
                                 <ul>
-                                    <li>Cart Subtotal<span>{{Currency::format($cart->total()) }}</span></li>
+                                    <li>Cart Subtotal<span class="subtotal">{{Currency::format($cart->total()) }}</span></li>
                                     <li>Shipping<span>Free</span></li>
                                     <li>You Save<span>$29.00</span></li>
                                     <li class="last">You Pay<span>$2531.00</span></li>
@@ -106,4 +106,7 @@
         </div>
     </div>
 </div>
+
+{{-- @vite( 'resources/js/cart.js') --}}
 @endsection
+

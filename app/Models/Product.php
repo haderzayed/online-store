@@ -40,6 +40,9 @@ class Product extends Model
      public function tags(){
        return $this->belongsToMany(Tag::class);
      }
+       function cart(){
+        return $this->belongsTo(Cart::class);
+    }
 
      public function scopeActive(Builder $builder){
         $builder->where('status','=','active');
@@ -58,5 +61,15 @@ class Product extends Model
         }
 
         return round(100 -(100 * $this->price/$this->compare_price),1);
+     }
+
+     public function in_cart(){
+        // if(Cart::where('product_id',$this->id)->exists()){
+        //     return true ;
+        // }else{
+        //     return false ;
+        // }
+        // dd(Cart::where('product_id',$this->id)->exists());
+      return  Cart::where('product_id',$this->id)->exists()  ;
      }
 }

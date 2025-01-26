@@ -8,10 +8,12 @@
             <span class="sale-tag">-{{$product->sale_persent}}%</span>
             @endif
             @if($product->new)
-            <span class="new-tag">New</span>
+            <span class="new-tag">New </span></div>
+            </span>
             @endif
             <div class="button">
-                <a href="product-details.html" class="btn"><i class="lni lni-cart"></i> Add to Cart</a>
+                <a href="javascript:void(0)" class="btn add-cart @if( $product->in_cart()) active @endif" data-id="{{$product->id}}">
+                    <i class="lni lni-cart"></i> @if( $product->in_cart()) Remove From Cart @else Add to Cart @endif </a>
             </div>
         </div>
         <div class="product-info">

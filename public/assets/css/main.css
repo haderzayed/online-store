@@ -46,6 +46,10 @@ body {
   font-size: 14px;
 }
 
+/* .active{
+    background-color:#081828   ! important ;
+} */
+
 p {
   margin: 0;
   padding: 0;
@@ -3354,10 +3358,10 @@ ol {
 }
 
 .single-product .product-image .button .btn {
-  padding: 12px 20px;
+  padding: 12px 10px;
   font-size: 13px;
-  font-weight: 600;
-  width: 140px;
+  font-weight: 500;
+  width: 160px;
 }
 
 .single-product .product-image .button .btn i {
@@ -8144,3 +8148,5 @@ blockquote span {
     display: none;
   }
 }
+
+

@@ -7,17 +7,26 @@ use App\Models\Product;
 use App\Repositories\Cart\CartModelRepository;
 use App\Repositories\Cart\CartRepository;
 use Illuminate\Http\Request;
+use App\Models\Cart;
+use App\Helpers\Currency;
 
 class CartController extends Controller
 {
+    protected $cart;
+
+    public function __construct(CartRepository $cart)
+    {
+         $this->cart=$cart;
+    }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(CartRepository $cart)
+    public function index()
     {
-        return view('front.cart',with('cart'));
+         $cart=$this->cart;
+        return view('front.cart',compact('cart'));
     }
 
 
@@ -28,14 +37,21 @@ class CartController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request ,CartRepository $cart)
+    public function store(Request $request)
     {
         $request->validate([
             'product_id'=>['required','exists:products,id'],
             'quantity'=>['nullable','int','min:1']
         ]);
         $product=Product::findOrFail($request->post('product_id'));
-        $cart->add( $product,$request->post('quantity'));
+        $this->cart->add( $product,$request->post('quantity'));
+        if($request->expectsJson()){
+            return response()->json([
+              'message'=>'item added to cart',
+              'count'=> Cart::count(),
+            ],201);
+        }
+        return redirect()->back()->with('success','product added to cart successfuly');
     }
 
 
@@ -46,14 +62,17 @@ class CartController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, CartRepository $cart)
+    public function update(Request $request , $id)
     {
         $request->validate([
-            'product_id'=>['required','exists:products,id'],
-            'quantity'=>['nullable','int','min:1']
+            'quantity'=>['required','int','min:1']
         ]);
-        $product=Product::findOrFail($request->post('product_id'));
-        $cart->update( $product,$request->post('quantity'));
+        // $product=Product::findOrFail($request->post('product_id'));
+        $this->cart->update( $id ,$request->post('quantity'));
+        return [
+            'count'=> Cart::count(),
+            'subtotal'=>Currency::format($this->cart->total()),
+        ];
     }
 
     /**
@@ -62,8 +81,14 @@ class CartController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(CartRepository $cart , $id)
+    public function destroy(Request $request)
     {
-        $cart->delete( $id);
+        $product = Product::findOrFail($request->product_id);
+        $this->cart->delete($product);
+        return [
+          'message'=>'item deleted !',
+          'count'=> Cart::count(),
+          'subtotal'=>Currency::format($this->cart->total()),
+        ];
     }
 }

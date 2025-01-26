@@ -32,7 +32,10 @@ Route::get('products',[ProductsController::class,'index'])
         ->name('products.index');
 Route::get('products/{product:slug}',[ProductsController::class,'show'])
         ->name('product.show');
-Route::resource('cart',CartController::class);
-
+Route::resource('/cart',CartController::class)->except(['destroy']);
+// Route::get('cart-add', [CartController::class, 'store'])
+//         ->name('cart.add');
+Route::delete('cart-delete', [CartController::class, 'destroy'])
+        ->name('cart.delete');
 require __DIR__.'/auth.php';
 require __DIR__.'/dashboard.php';

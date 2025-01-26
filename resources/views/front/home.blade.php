@@ -812,4 +812,4 @@
     timer();
     setInterval(timer, 1000);
 </script>
-@endpush
+ @endpush
