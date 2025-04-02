@@ -42,17 +42,20 @@ class Order extends Model
         ]);
     }
 
-    public function products(){
-
-        return $this->belongsToMany(
-            Product::class,
-            'product_items',
-            'order_id',
-            'product_id',
-            'id',
-            'id',
-    )->using(OrderItem::class)
-    ->withPivot(['product_name','peice','quantity','options']);
+    // public function products(){
+    //     return $this->belongsToMany(
+    //         Product::class,
+    //         'product_items',
+    //         'order_id',
+    //         'product_id',
+    //         'id',
+    //         'id',
+    // )
+    // ->using(OrderItem::class)
+    // ->withPivot(['product_name','price','quantity','options']);
+    // }
+    public function items(){
+        return $this->hasMany(OrderItem::class,'order_id');
     }
 
     public function addresses(){

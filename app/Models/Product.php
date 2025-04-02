@@ -43,7 +43,7 @@ class Product extends Model
        function cart(){
         return $this->belongsTo(Cart::class);
     }
-
+    
      public function scopeActive(Builder $builder){
         $builder->where('status','=','active');
      }
