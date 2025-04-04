@@ -2,7 +2,6 @@
 @section('title','Stores')
 @section('breadcrumb')
     @parent
-    <li class="breadcrumb-item"><a href="{{ route('dashboard.') }}">Home</a></li>
     <li class="breadcrumb-item active">Stores</li>
 @endsection
 @section('content')
@@ -43,7 +42,7 @@
     <tbody>
         @forelse ($stores as $store )
         <tr>
-            <td><img src="{{asset('storage/'. $store->logo_image )}}" width="100" height="100"> </td>
+            <td><img src="{{ $store->image_url }}" width="100" height="100"> </td>
             <td>{{ $store->id }}</td>
             <td>{{ $store->name }}</td>
             <td>{{ $store->status }}</td>

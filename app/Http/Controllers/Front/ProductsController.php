@@ -17,5 +17,5 @@ class ProductsController extends Controller
                     abort(404);
             }
         return view('front.products.product-details',compact('product'));
-    }  
+    }
 }

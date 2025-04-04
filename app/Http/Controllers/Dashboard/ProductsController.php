@@ -48,9 +48,9 @@ class ProductsController extends Controller
      */
     public function store(ProductRequest $request)
     {
-        $request->merge([
-            'slug'=>Str::slug($request->name)
-        ]);
+        // $request->merge([
+        //     'slug'=>Str::slug($request->name)
+        // ]);
         $data=$request->except('image');
         if($request->hasFile('image')){
         $file = $request->file('image') ;
