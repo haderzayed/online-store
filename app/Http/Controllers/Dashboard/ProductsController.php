@@ -51,6 +51,7 @@ class ProductsController extends Controller
         // $request->merge([
         //     'slug'=>Str::slug($request->name)
         // ]);
+        
         $data=$request->except('image');
         if($request->hasFile('image')){
         $file = $request->file('image') ;
